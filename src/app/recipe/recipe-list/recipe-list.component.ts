@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from '../recipe.model';
-import { Ingredient } from 'src/app/shared/ingredient.model';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -8,35 +8,12 @@ import { Ingredient } from 'src/app/shared/ingredient.model';
   styleUrls: ['./recipe-list.component.css']
 })
 export class RecipeListComponent implements OnInit {
-  @Output() recipeSelected = new EventEmitter<Recipe>();
-  recipes: Recipe[] = [
-    new Recipe(
-      'Schnitzel', 
-      'Lecker Schnitzel', 
-      'https://static.essen-und-trinken.de/bilder/e9/b1/7321/galleryimage/ed956d4fa02f282fabdb282aa6bc6447.jpg',
-      [
-        new Ingredient('Fleisch', 10),
-        new Ingredient('Semmelbrösel', 1),
-        new Ingredient('Eier', 2),
-        new Ingredient('Mehl', 100)
-      ]
-    ),
-    new Recipe(
-      'Salat', 
-      'Gesund', 
-      'https://images.lecker.de/rasanter-salat-mit-ei-und-feta-lecker-07-2018-F8498901,id=4dba2952,b=lecker,w=610,cg=c.jpg',
-      []
-    )
+  recipes: Recipe[];
 
-  ];
-  selectedRecipe: Recipe;
-  constructor() { }
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
-  }
-
-  onSelected(recipe: Recipe) {
-    this.recipeSelected.emit(recipe);
+    this.recipes = this.recipeService.getRecipes();
   }
 
 }
