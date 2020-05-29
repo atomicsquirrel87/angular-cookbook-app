@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Recipe } from '../recipe.model';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 
 @Component({
   selector: 'app-recipe-list',
@@ -8,7 +9,26 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeListComponent implements OnInit {
   @Output() recipeSelected = new EventEmitter<Recipe>();
-  recipe = new Recipe('Dummy-Rezept', 'Dummy-Beschreibung', 'https://static.turbosquid.com/Preview/2019/02/18__04_59_25/Crash_Test_Dummy_Rigged_mb_00.jpg5B1ADE98-2892-494F-9EB2-F0B49A1BE375DefaultHQ.jpg');
+  recipes: Recipe[] = [
+    new Recipe(
+      'Schnitzel', 
+      'Lecker Schnitzel', 
+      'https://static.essen-und-trinken.de/bilder/e9/b1/7321/galleryimage/ed956d4fa02f282fabdb282aa6bc6447.jpg',
+      [
+        new Ingredient('Fleisch', 10),
+        new Ingredient('Semmelbrösel', 1),
+        new Ingredient('Eier', 2),
+        new Ingredient('Mehl', 100)
+      ]
+    ),
+    new Recipe(
+      'Salat', 
+      'Gesund', 
+      'https://images.lecker.de/rasanter-salat-mit-ei-und-feta-lecker-07-2018-F8498901,id=4dba2952,b=lecker,w=610,cg=c.jpg',
+      []
+    )
+
+  ];
   selectedRecipe: Recipe;
   constructor() { }
 
