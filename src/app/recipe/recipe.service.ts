@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 
@@ -6,6 +7,11 @@ import { Ingredient } from '../shared/ingredient.model';
   providedIn: 'root'
 })
 export class RecipeService {
+
+  recipesChanged = new EventEmitter<Recipe[]>();
+
+  constructor(private http: HttpClient) { }
+
   private recipes: Recipe[] = [
     new Recipe(
       'Schnitzel', 
@@ -46,5 +52,20 @@ export class RecipeService {
     this.recipes[this.recipes.indexOf(oldeRecipe)] = newRecipe;
   }
 
-  constructor() { }
+  storeData() {
+    const body = JSON.stringify(this.recipes);
+    const headers = new HttpHeaders({'Content-Type' : 'application/json'});
+    return this.http.put('https://ng-http-1172f.firebaseio.com/recipe.json', body, {headers : headers});
+  }
+
+  fetchData() {
+    this.http.get('https://ng-http-1172f.firebaseio.com/recipe.json', {responseType: 'json'}).subscribe(
+      (recipes : Recipe[]) => {
+        this.recipes = recipes;
+        this.recipesChanged.emit(this.recipes);
+      }
+    );
+  }
+
+  
 }
